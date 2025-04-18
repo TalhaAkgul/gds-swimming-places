@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Metro Station Path Finder</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; width: 100%; font-family: Arial, sans-serif; }
+    #map { height: 100%; width: 100%; }
+    #info {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+
+<div id="info">
+  <strong>Click on the map</strong> to draw the shortest path to the nearest metro station.
+</div>
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  // Center the map using values passed from Flask
+  const map = L.map('map').setView([{{ lat }}, {{ lon }}], 15);
+
+  // Use a known reliable tile provider (Carto)
+//  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+//    attribution: '&copy; OpenStreetMap, &copy; Carto',
+//    subdomains: 'abcd',
+//    maxZoom: 19
+//  }).addTo(map);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+
+ // Log the stations data to console to check
+ const stations = {{ stations | tojson }};
+    console.log("Stations data:", stations);  // This will log the station data in the browser's console
+    
+    // Add station markers
+    stations.forEach(station => {
+      const marker = L.marker([station.lat, station.lon], {
+        title: station.name || "Metro Station"
+      }).addTo(map);
+      
+      // Bind a popup with the station's name
+      marker.bindPopup(`<b>🚇 ${station.name || "Unnamed Station"}</b>`);
+    });
+    
+  let routeLayer;
+
+  map.on('click', function (e) {
+    const lat = e.latlng.lat;
+    const lon = e.latlng.lng;
+
+    fetch('/shortest-path', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lat: lat, lon: lon })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.error) {
+        alert(data.error);
+        return;
+      }
+
+      // Clear existing path
+      if (routeLayer) {
+        map.removeLayer(routeLayer);
+      }
+
+      // Draw the new path
+      routeLayer = L.polyline(data.path, {
+        color: 'blue',
+        weight: 5,
+        opacity: 0.8
+      }).addTo(map);
+
+      // Zoom to fit the path
+      map.fitBounds(routeLayer.getBounds());
+    })
+    .catch(err => alert("Error: " + err.message));
+  });
+</script>
+</body>
+</html>
