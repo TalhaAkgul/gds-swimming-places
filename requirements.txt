@@ -1,1 +1,9 @@
-osmnx==1.7.0
+osmnx==2.0.2
+geopandas==1.0.1
+matplotlib==3.10.1
+networkx==3.4.2
+shapely==2.1.0
+pandas==2.2.3
+requests==2.32.3
+pyproj==3.7.1
+numpy==2.2.4
