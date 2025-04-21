@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Metro Station Path Finder</title>
+  <title>Swimming Area Path Finder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Leaflet CSS -->
@@ -26,7 +26,7 @@
 <body>
 
 <div id="info">
-  <strong>Click on the map</strong> to draw the shortest path to the nearest metro station.
+  <strong>Click on the map</strong> to draw the shortest path to the nearest swimming area.
 </div>
 <div id="map"></div>
 
@@ -47,19 +47,18 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; OpenStreetMap contributors'
 }).addTo(map);
 
-
- // Log the stations data to console to check
- const stations = {{ stations | tojson }};
-    console.log("Stations data:", stations);  // This will log the station data in the browser's console
+ // Log the bathing areas data to console to check
+ const bathingAreas = {{ bathing_areas | tojson }};
+    console.log("Bathing Areas data:", bathingAreas);  // This will log the bathing area data in the browser's console
     
-    // Add station markers
-    stations.forEach(station => {
-      const marker = L.marker([station.lat, station.lon], {
-        title: station.name || "Metro Station"
+    // Add bathing area markers
+    bathingAreas.forEach(area => {
+      const marker = L.marker([area.lat, area.lon], {
+        title: area.name || "Swimming Area"
       }).addTo(map);
       
-      // Bind a popup with the station's name
-      marker.bindPopup(`<b>🚇 ${station.name || "Unnamed Station"}</b>`);
+      // Bind a popup with the bathing area's name
+      marker.bindPopup(`<b>🏖️ ${area.name || "Unnamed Swimming Area"}</b>`);
     });
     
   let routeLayer;
