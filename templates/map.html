@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Metro Station Path Finder</title>
+  <title>Bathing places Path Finder</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Leaflet CSS -->
@@ -14,7 +14,7 @@
     #info {
       position: absolute;
       top: 10px;
-      left: 10px;
+      left: 800px;
       z-index: 1000;
       background: rgba(255, 255, 255, 0.9);
       padding: 10px;
@@ -62,6 +62,23 @@
   animation: 12s prog ease-in infinite;
 }
 
+.popup-button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.popup-button:hover {
+  background-color: #0056b3;
+}
+
+
 @keyframes prog {
   to { width: 100%; }
 }
@@ -71,11 +88,11 @@
 <body>
 
 <div id="info">
-  <strong>Click on the map</strong> to draw the shortest path to the nearest bathing station.
+  <strong>Click on the map</strong> to draw the shortest path to the nearest bathing place.
 </div>
 <div id="loader-overlay" style="display: none;">
   <div id="loader-container">
-    <div style="margin-bottom: 8px; font-size: 16px; color: #fff;">Finding nearest station...</div>
+    <div style="margin-bottom: 8px; font-size: 16px; color: #fff;">Finding nearest bathing place...</div>
     <span class="loader"></span>
   </div>
 </div>
@@ -86,75 +103,118 @@
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-  // Center the map using values passed from Flask
   const map = L.map('map').setView([{{ lat }}, {{ lon }}], 15);
 
-  // Use a known reliable tile provider (Carto)
-//  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-//    attribution: '&copy; OpenStreetMap, &copy; Carto',
-//    subdomains: 'abcd',
-//    maxZoom: 19
-//  }).addTo(map);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-  attribution: '&copy; OpenStreetMap contributors'
-}).addTo(map);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
 
+  const stations = {{ stations | tojson }};
+  console.log("Bathing places data:", stations);
 
- // Log the stations data to console to check
- const stations = {{ stations | tojson }};
-    console.log("Stations data:", stations);  // This will log the station data in the browser's console
-    
-    // Add station markers
-    stations.forEach(station => {
-      const marker = L.marker([station.lat, station.lon], {
-        title: station.name || "Bathing Place"
-      }).addTo(map);
-      
-      // Bind a popup with the station's name
-      // TODO : Add more details if available and also a button to get direction
-      marker.bindPopup(`<b>🚇 ${station.name || "Unnamed Station"}</b>`);
-    });
-    
-  let routeLayer;
+  let lastClickedLocation = null;
+  let routeLayer = null;
 
-  map.on('click', function (e) {
-    const lat = e.latlng.lat;
-    const lon = e.latlng.lng;
+  stations.forEach(station => {
+    console.log("Bathing places Data:", station);
+
+    const marker = L.marker([station.lat, station.lon], {
+      title: station.name || "Bathing Place"
+    }).addTo(map);
+
+    const goodWater = station.Good_water ? "Yes" : "No";
+
+    marker.bindPopup(`
+      <b>🏊 ${station.name || "Unnamed Bathing Place"}</b><br>
+      📍 Lat: ${station.lat.toFixed(5)}, Lon: ${station.lon.toFixed(5)}<br>
+      🌊 Water Area: ${station.WaterArea || "Unknown"}<br>
+      ✅ Good Water: ${goodWater}<br>
+      🧪 Test: ${station.stofparameter || "N/A"}<br>
+      📅 Date of test: ${station.dato || "N/A"}<br>
+      <button class="popup-button" onclick="goToStation(${station.lat}, ${station.lon})">GO!</button>
+    `);
+  });
+
+  function goToStation(destLat, destLon) {
+    if (!lastClickedLocation) {
+      alert("Click on the map first to set a starting point.");
+      return;
+    }
+
     document.getElementById("loader-overlay").style.display = "flex";
+
     fetch('/shortest-path', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ lat: lat, lon: lon })
+      body: JSON.stringify({
+        lat: lastClickedLocation.lat,
+        lon: lastClickedLocation.lng,
+        dest_lat: destLat,
+        dest_lon: destLon
+      })
     })
     .then(res => res.json())
     .then(data => {
       document.getElementById("loader-overlay").style.display = "none";
+
       if (data.error) {
         alert(data.error);
         return;
       }
 
-      // Clear existing path
       if (routeLayer) {
         map.removeLayer(routeLayer);
       }
 
-      // Draw the new path
       routeLayer = L.polyline(data.path, {
         color: 'blue',
         weight: 5,
         opacity: 0.8
       }).addTo(map);
 
-      // Zoom to fit the path
       map.fitBounds(routeLayer.getBounds());
     })
     .catch(err => {
-    // Hide loader
-    document.getElementById("loader-overlay").style.display = "none";
-    alert("Error: " + err.message);
-  });
+      document.getElementById("loader-overlay").style.display = "none";
+      alert("Error: " + err.message);
+    });
+  }
+
+  map.on('click', function (e) {
+    lastClickedLocation = e.latlng;
+    document.getElementById("loader-overlay").style.display = "flex";
+
+    fetch('/shortest-path', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lat: e.latlng.lat, lon: e.latlng.lng })
+    })
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById("loader-overlay").style.display = "none";
+
+      if (data.error) {
+        alert(data.error);
+        return;
+      }
+
+      if (routeLayer) {
+        map.removeLayer(routeLayer);
+      }
+
+      routeLayer = L.polyline(data.path, {
+        color: 'blue',
+        weight: 5,
+        opacity: 0.8
+      }).addTo(map);
+
+      map.fitBounds(routeLayer.getBounds());
+    })
+    .catch(err => {
+      document.getElementById("loader-overlay").style.display = "none";
+      alert("Error: " + err.message);
+    });
   });
 </script>
 </body>
