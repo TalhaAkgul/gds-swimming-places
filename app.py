@@ -113,7 +113,9 @@ def index():
 def shortest_path():
     data = request.json
     lat, lon = data['lat'], data['lon']
-
+    
+    # Store all path lengths
+    all_path_lengths = []
     try:
         orig_node = ox.nearest_nodes(G, lon, lat)
     except Exception as e:
@@ -123,22 +125,39 @@ def shortest_path():
     best_path = None
     best_target = None
 
-    for target_node in target_nodes:
+    for station, target_node in zip(stations, target_nodes):
         try:
             path = nx.shortest_path(G, orig_node, target_node, weight='length')
-            length = nx.shortest_path_length(G, orig_node, target_node, weight='length')
+            length = nx.shortest_path_length(
+                G, orig_node, target_node, weight='length')
+            all_path_lengths.append({
+                'station_name': station['name'],
+                'station_lat': station['latitude'],
+                'station_lon': station['longitude'],
+                'length_meters': length
+            })
             if length < shortest:
                 shortest = length
                 best_path = path
                 best_target = target_node
         except nx.NetworkXNoPath:
+            all_path_lengths.append({
+                'station_name': station['name'],
+                'station_lat': station['latitude'],
+                'station_lon': station['longitude'],
+                'length_meters': None
+            })
             continue
 
     if not best_path:
         return jsonify({'error': 'No path found'}), 404
 
     path_coords = [(G.nodes[n]['y'], G.nodes[n]['x']) for n in best_path]
-    return jsonify({'path': path_coords})
+    all_path_lengths = sorted(all_path_lengths, key=lambda x: x['length_meters'] if x['length_meters'] is not None else float('inf'))
+    return jsonify({
+        'path': path_coords,
+        'all_lengths': all_path_lengths
+    })
 
 if __name__ == '__main__':
     app.run(debug=True)

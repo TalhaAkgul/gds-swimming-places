@@ -66,6 +66,31 @@
   to { width: 100%; }
 }
 
+
+#lengths-info {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  z-index: 1000;
+  max-height: 300px;
+  width: 320px;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  font-size: 14px;
+}
+#lengths-info ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 5px 0 0 0;
+}
+#lengths-info li {
+  margin: 3px 0;
+}
+
+
   </style>
 </head>
 <body>
@@ -79,6 +104,11 @@
     <span class="loader"></span>
   </div>
 </div>
+<div id="lengths-info">
+  <strong>Distances to all stations:</strong>
+  <ul id="lengths-list"></ul>
+</div>
+
 
 
 <div id="map"></div>
@@ -146,6 +176,21 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         weight: 5,
         opacity: 0.8
       }).addTo(map);
+
+
+      // Clear and update the lengths list
+      const lengthsList = document.getElementById("lengths-list");
+      lengthsList.innerHTML = ""; // clear previous list
+
+      data.all_lengths.forEach(item => {
+        const li = document.createElement("li");
+        if (item.length_meters !== null) {
+          li.textContent = `📍 ${item.station_name}: ${(item.length_meters / 1000).toFixed(2)} km`;
+        } else {
+          li.textContent = `📍 ${item.station_name}: ❌ No path`;
+        }
+        lengthsList.appendChild(li);
+      });
 
       // Zoom to fit the path
       map.fitBounds(routeLayer.getBounds());
