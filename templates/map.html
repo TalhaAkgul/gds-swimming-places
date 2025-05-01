@@ -21,13 +21,66 @@
       border-radius: 8px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
+
+#loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#loader-container {
+  width: 300px;
+  text-align: center;
+}
+
+.loader {
+  display: block;
+  position: relative;
+  height: 12px;
+  width: 100%;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.loader:after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0;
+  background: #FF3D00;
+  animation: 12s prog ease-in infinite;
+}
+
+@keyframes prog {
+  to { width: 100%; }
+}
+
   </style>
 </head>
 <body>
 
 <div id="info">
-  <strong>Click on the map</strong> to draw the shortest path to the nearest metro station.
+  <strong>Click on the map</strong> to draw the shortest path to the nearest bathing station.
 </div>
+<div id="loader-overlay" style="display: none;">
+  <div id="loader-container">
+    <div style="margin-bottom: 8px; font-size: 16px; color: #fff;">Finding nearest station...</div>
+    <span class="loader"></span>
+  </div>
+</div>
+
+
 <div id="map"></div>
 
 <!-- Leaflet JS -->
@@ -55,10 +108,11 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     // Add station markers
     stations.forEach(station => {
       const marker = L.marker([station.lat, station.lon], {
-        title: station.name || "Metro Station"
+        title: station.name || "Bathing Place"
       }).addTo(map);
       
       // Bind a popup with the station's name
+      // TODO : Add more details if available and also a button to get direction
       marker.bindPopup(`<b>🚇 ${station.name || "Unnamed Station"}</b>`);
     });
     
@@ -67,7 +121,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   map.on('click', function (e) {
     const lat = e.latlng.lat;
     const lon = e.latlng.lng;
-
+    document.getElementById("loader-overlay").style.display = "flex";
     fetch('/shortest-path', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -75,6 +129,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     })
     .then(res => res.json())
     .then(data => {
+      document.getElementById("loader-overlay").style.display = "none";
       if (data.error) {
         alert(data.error);
         return;
@@ -95,7 +150,11 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       // Zoom to fit the path
       map.fitBounds(routeLayer.getBounds());
     })
-    .catch(err => alert("Error: " + err.message));
+    .catch(err => {
+    // Hide loader
+    document.getElementById("loader-overlay").style.display = "none";
+    alert("Error: " + err.message);
+  });
   });
 </script>
 </body>
