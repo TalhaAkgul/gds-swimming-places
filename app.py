@@ -142,9 +142,9 @@ def shortest_path():
                 'station_lon': station['longitude'],
                 'length_meters': length
             })
-            if length < shortest:
-                    shortest = length
-                    path = candidate_path
+                if length < shortest:
+                        shortest = length
+                        path = candidate_path
             except nx.NetworkXNoPath:
                 all_path_lengths.append({
                 'station_name': station['name'],

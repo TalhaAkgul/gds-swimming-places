@@ -253,21 +253,6 @@
         lengthsList.appendChild(li);
       });
 
-
-      // Clear and update the lengths list
-      const lengthsList = document.getElementById("lengths-list");
-      lengthsList.innerHTML = ""; // clear previous list
-
-      data.all_lengths.forEach(item => {
-        const li = document.createElement("li");
-        if (item.length_meters !== null) {
-          li.textContent = `📍 ${item.station_name}: ${(item.length_meters / 1000).toFixed(2)} km`;
-        } else {
-          li.textContent = `📍 ${item.station_name}: ❌ No path`;
-        }
-        lengthsList.appendChild(li);
-      });
-
       // Zoom to fit the path
       map.fitBounds(routeLayer.getBounds());
     })
