@@ -32,7 +32,7 @@ target_coords = stations_gdf.geometry.apply(lambda x: (x.y, x.x)).tolist()
 target_nodes = [ox.nearest_nodes(G, lon, lat) for lat, lon in target_coords]
 """
 
-df = pd.read_csv("data_cleaning/bathing_places_cleaned.csv")
+df = pd.read_csv("data_cleaning/final_places_and_quality.csv")
 
 # Fix formatting: Replace commas with dots and convert to float
 df["Latitude"] = df["Latitude"].str.replace(",", ".").astype(float)
@@ -51,15 +51,13 @@ for _, row in df.iterrows():
             "name": row["Name"],
             "latitude": lat,
             "longitude": lon,
-            "location": row.get("Location"),
-            "responsible": row.get("Responsible"),
-            "type": row.get("Type"),
-            "water_area": row.get("WaterArea"),
-            "started": row.get("Started"),
-            "closed": row.get("Closed"),
-            "blue_flag": row.get("BlueFlag"),
+            "WaterArea": row.get("WaterArea"),
+            "BlueFlag": row.get("BlueFlag"),
+            "Good_water": row.get("Good_water"),
+            "stofparameter": row.get("Stofparameter"),
+            "dato": row.get("Dato"),
             "node_id": node_id
-        }
+}
         stations.append(station)
     except Exception as e:
         print(f"Skipping station {row['Name']} due to error: {e}")
@@ -88,17 +86,16 @@ def index():
         # Ensure we only add stations with valid coordinates (latitude and longitude)
         if station["latitude"] and station["longitude"]:
             station_data.append({
-                "name": station["name"],
-                "lat": station["latitude"],
-                "lon": station["longitude"],
-                "location": station.get("location"),
-                "responsible": station.get("responsible"),
-                "type": station.get("type"),
-                "water_area": station.get("water_area"),
-                "started": station.get("started"),
-                "closed": station.get("closed"),
-                "blue_flag": station.get("blue_flag")
-            })
+            "name": station["name"],
+           "lat": station["latitude"],
+            "lon": station["longitude"],
+            "WaterArea": station.get("WaterArea"),
+            "BlueFlag": station.get("BlueFlag"),
+            "Good_water": station.get("Good_water"),
+            "stofparameter": station.get("stofparameter"),
+            "dato": station.get("dato")
+})
+
 
     app.config["stations"] = station_data  # optional: store for use elsewhere
 
@@ -121,27 +118,35 @@ def shortest_path():
     except Exception as e:
         return jsonify({'error': f'Invalid starting location: {str(e)}'}), 400
 
-    shortest = float('inf')
-    best_path = None
-    best_target = None
-
-    for station, target_node in zip(stations, target_nodes):
+    # Check if a specific destination was requested
+    if "dest_lat" in data and "dest_lon" in data:
+        dest_lat = data["dest_lat"]
+        dest_lon = data["dest_lon"]
         try:
-            path = nx.shortest_path(G, orig_node, target_node, weight='length')
-            length = nx.shortest_path_length(
+            dest_node = ox.nearest_nodes(G, dest_lon, dest_lat)
+            path = nx.shortest_path(G, orig_node, dest_node, weight='length')
+        except Exception as e:
+            return jsonify({'error': f'Path to destination failed: {str(e)}'}), 400
+    else:
+        # Default: find path to the nearest bathing place
+        shortest = float('inf')
+        path = None
+        for station, target_node in zip(stations, target_nodes):
+            try:
+                candidate_path = nx.shortest_path(G, orig_node, target_node, weight='length')
+                length = nx.shortest_path_length(
                 G, orig_node, target_node, weight='length')
-            all_path_lengths.append({
+                all_path_lengths.append({
                 'station_name': station['name'],
                 'station_lat': station['latitude'],
                 'station_lon': station['longitude'],
                 'length_meters': length
             })
             if length < shortest:
-                shortest = length
-                best_path = path
-                best_target = target_node
-        except nx.NetworkXNoPath:
-            all_path_lengths.append({
+                    shortest = length
+                    path = candidate_path
+            except nx.NetworkXNoPath:
+                all_path_lengths.append({
                 'station_name': station['name'],
                 'station_lat': station['latitude'],
                 'station_lon': station['longitude'],
@@ -149,15 +154,16 @@ def shortest_path():
             })
             continue
 
-    if not best_path:
-        return jsonify({'error': 'No path found'}), 404
+        if not path:
+            return jsonify({'error': 'No path found to any bathing place'}), 404
 
-    path_coords = [(G.nodes[n]['y'], G.nodes[n]['x']) for n in best_path]
+    path_coords = [(G.nodes[n]['y'], G.nodes[n]['x']) for n in path]
     all_path_lengths = sorted(all_path_lengths, key=lambda x: x['length_meters'] if x['length_meters'] is not None else float('inf'))
     return jsonify({
         'path': path_coords,
         'all_lengths': all_path_lengths
     })
+
 
 if __name__ == '__main__':
     app.run(debug=True)
