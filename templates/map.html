@@ -145,27 +145,41 @@
 
   let lastClickedLocation = null;
   let routeLayer = null;
+  // Define green and red icons
+    const greenIcon = new L.Icon({
+      iconUrl: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32]
+    });
 
+    const redIcon = new L.Icon({
+      iconUrl: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32]
+    });
   stations.forEach(station => {
     console.log("Bathing places Data:", station);
 
+    const goodWater = station.Good_water ? "Yes" : "No";
+    const icon = station.Good_water ? greenIcon : redIcon;
+
     const marker = L.marker([station.lat, station.lon], {
-      title: station.name || "Bathing Place"
+      title: station.name || "Bathing Place",
+      icon: icon
     }).addTo(map);
 
-    const goodWater = station.Good_water ? "Yes" : "No";
-
     marker.bindPopup(`
-      <b>🏊 ${station.name || "Unnamed Bathing Place"}</b><br>
-      📍 Lat: ${station.lat.toFixed(5)}, Lon: ${station.lon.toFixed(5)}<br>
-      🌊 Water Area: ${station.WaterArea || "Unknown"}<br>
-      ✅ Good Water: ${goodWater}<br>
-      🧪 Test: ${station.stofparameter || "N/A"}<br>
-      📅 Date of test: ${station.dato || "N/A"}<br>
-      <button class="popup-button" onclick="goToStation(${station.lat}, ${station.lon})">GO!</button>
-    `);
+    <b>🏊 ${station.name || "Unnamed Bathing Place"}</b><br>
+    📍 Lat: ${station.lat.toFixed(5)}, Lon: ${station.lon.toFixed(5)}<br>
+    🌊 Water Area: ${station.WaterArea || "Unknown"}<br>
+    ✅ Good Water: ${goodWater}<br>
+    🧪 Test: ${station.stofparameter || "N/A"}<br>
+    📅 Date of test: ${station.dato || "N/A"}<br>
+    <button class="popup-button" onclick="goToStation(${station.lat}, ${station.lon})">GO!</button>
+  `);
   });
-
   function goToStation(destLat, destLon) {
     if (!lastClickedLocation) {
       alert("Click on the map first to set a starting point.");
