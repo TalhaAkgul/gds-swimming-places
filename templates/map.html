@@ -107,6 +107,15 @@
   margin: 3px 0;
 }
 
+.glow-point {
+  background: #00f;
+  border-radius: 50%;
+  width: 8px;
+  height: 8px;
+  box-shadow: 0 0 8px 4px rgba(0, 0, 255, 0.6);
+  opacity: 0.9;
+}
+
 
   </style>
 </head>
@@ -145,6 +154,35 @@
 
   let lastClickedLocation = null;
   let routeLayer = null;
+
+  let movingMarker = null; // Declare this outside if needed globally
+
+  function animateGlowingPoint(path) {
+    if (movingMarker) {
+      map.removeLayer(movingMarker);
+    }
+
+    let index = 0;
+    const glowingDivIcon = L.divIcon({ className: 'glow-point' });
+
+    movingMarker = L.marker(path[0], { icon: glowingDivIcon }).addTo(map);
+
+    const speed = 100; // milliseconds between steps
+    const pathLength = path.length;
+
+    function moveStep() {
+      if (index < pathLength) {
+        movingMarker.setLatLng(path[index]);
+        index++;
+      } else {
+        index = 0; // Reset index to create a loop
+      }
+
+      setTimeout(moveStep, speed);
+    }
+
+    moveStep();
+  }
   // Define green and red icons
     const greenIcon = new L.Icon({
       iconUrl: 'https://maps.google.com/mapfiles/ms/icons/green-dot.png',
@@ -217,6 +255,7 @@
         opacity: 0.8
       }).addTo(map);
 
+      animateGlowingPoint(data.path);
       map.fitBounds(routeLayer.getBounds());
     })
     .catch(err => {
@@ -252,7 +291,7 @@
         weight: 5,
         opacity: 0.8
       }).addTo(map);
-
+      animateGlowingPoint(data.path);
       // Clear and update the lengths list
       const lengthsList = document.getElementById("lengths-list");
       lengthsList.innerHTML = ""; // clear previous list
