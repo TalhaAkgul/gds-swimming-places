@@ -1,37 +1,37 @@
 ,Name,Latitude,Longitude,WaterArea,BlueFlag,Good_water,Stofparameter,Dato
-0,Ved Kongelundskroen,"55,56278059475752","12,56134220358073",Køge Bugt,False,True,Intestinal enterokokker,2024-08-27
-1,Amager Sydstrand,"55,58107234553681","12,658562241276446",Køge Bugt,False,False,Intestinal enterokokker,2024-08-20
+0,Ved Kongelundskroen,"55,56278059475752","12,56134220358073",Køge Bugt,False,True,Escherichia coli,2024-08-27
+1,Amager Sydstrand,"55,58107234553681","12,658562241276446",Køge Bugt,False,False,Escherichia coli,2024-08-20
 2,Dragør Nordstrand,"55,6034555531332","12,673227748026212",Nordlige Øresund,False,True,Escherichia coli,2024-08-20
 3,"Dragør Søbad, Syd","55,58665573485622","12,675403549796474",Mangler,False,True,Escherichia coli,1999-09-14
 4,Søvang,"55,56501192136597","12,621983729910687",Køge Bugt,False,False,Escherichia coli,2024-08-20
 5,"Dragør søbad, nord","55,58702896235373","12,675851272827456",Køge Bugt,False,True,Escherichia coli,2025-04-16
-6,Hellerup Strand,"55,73263178861659","12,582466140588627",Nordlige Øresund,False,True,Escherichia coli,2024-09-09
+6,Hellerup Strand,"55,73263178861659","12,582466140588627",Nordlige Øresund,False,True,Intestinal enterokokker,2024-09-09
 7,Syd for Kastrup Lystbådehavn,"55,64042268518959","12,653669704980267",Nordlige Øresund,False,True,Intestinal enterokokker,2025-03-26
 8,Scanport badestation,"55,637046153925986","12,656759502800412",Nordlige Øresund,False,True,Intestinal enterokokker,2025-03-26
 9,"Kastrup Søbad, nord for Kastrup lystbådehavn","55,64545531901956","12,649543574382358",Nordlige Øresund,False,True,Intestinal enterokokker,2025-03-26
 10,Kastrup søbad,"55,633402568810006","12,656894110974772",Mangler,False,True,Escherichia coli,1994-07-26
-11,Lodsparken,"55,62734519990664","12,502265612848722",Kalveboderne,False,False,Escherichia coli,2024-08-13
+11,Lodsparken,"55,62734519990664","12,502265612848722",Kalveboderne,False,True,Intestinal enterokokker,2024-08-13
 12,Mørtelrenden,"55,62875482640816","12,503579982433282",Kalveboderne,False,False,Escherichia coli,2024-08-13
-13,Hvidovre Havn,"55,62547529065108","12,503528533039788",Kalveboderne,False,True,Intestinal enterokokker,2024-08-13
-14,"Amager Strandpark, Lagunen","55,657922417142586","12,640032256927283",Øresund,False,True,Intestinal enterokokker,2025-04-01
+13,Hvidovre Havn,"55,62547529065108","12,503528533039788",Kalveboderne,False,True,Escherichia coli,2024-08-13
+14,"Amager Strandpark, Lagunen","55,657922417142586","12,640032256927283",Øresund,False,True,Escherichia coli,2025-04-01
 15,Stranden ved Valbyparken,"55,6372329068556","12,524962403312879",Mangler,False,True,Intestinal enterokokker,2025-04-09
-16,Vandtrappen Badezone,"55,64788784310548","12,546823560128423",Københavns Havn,False,True,Escherichia coli,2025-04-09
-17,Byskoven Badezone,"55,62187078007546","12,52322848575085",,False,True,Intestinal enterokokker,2025-04-10
+16,Vandtrappen Badezone,"55,64788784310548","12,546823560128423",Københavns Havn,False,True,Intestinal enterokokker,2025-04-09
+17,Byskoven Badezone,"55,62187078007546","12,52322848575085",,False,True,Escherichia coli,2025-04-10
 18,"Nordhavn, havsvømmebane","55,72299786047034","12,609590964373732",Københavns Havn,False,True,Escherichia coli,2023-09-15
 19,Svanemøllestranden,"55,71992178705187","12,584471299867506",Øresund,False,True,Escherichia coli,2025-04-06
 20,Stubkaj,"55,70917279026226","12,595048212650582",Københavns Havn,False,True,Escherichia coli,2025-04-10
-21,Teglholm Brygge Badezone,"55,65141733834468","12,545755643210983",Københavns Havn,False,True,Intestinal enterokokker,2025-04-09
-22,Søndre Refshale Badezone,"55,690162608075084","12,608567217749624",Københavns Havn,False,True,Escherichia coli,2025-01-15
+21,Teglholm Brygge Badezone,"55,65141733834468","12,545755643210983",Københavns Havn,False,True,Escherichia coli,2025-04-09
+22,Søndre Refshale Badezone,"55,690162608075084","12,608567217749624",Københavns Havn,False,True,Intestinal enterokokker,2025-01-15
 23,Halvandet Badezone,"55,69519715081318","12,608904204524423",Københavns Havn,False,False,Escherichia coli,2023-01-04
-24,Halfdansgade Badezone,"55,66614080858703","12,574647983071321",København Havn,False,True,Escherichia coli,2025-04-01
-25,Havnegade Badezone,"55,67819668336113","12,592806916387461",Københavns Havn,False,True,Escherichia coli,2025-04-01
-26,Kalvebod Bølge Badezone,"55,66909722819186","12,576254239086913",Københavns Havn,False,True,Escherichia coli,2025-04-01
-27,Fisketorvet Havnebad,"55,66268531286016","12,563929485293775",København Havn,False,True,Escherichia coli,2025-04-01
-28,Havnevigen Badezone,"55,65454210496223","12,565669769620461",Københavns Havn,False,True,Escherichia coli,2025-04-01
+24,Halfdansgade Badezone,"55,66614080858703","12,574647983071321",København Havn,False,True,Intestinal enterokokker,2025-04-01
+25,Havnegade Badezone,"55,67819668336113","12,592806916387461",Københavns Havn,False,True,Intestinal enterokokker,2025-04-01
+26,Kalvebod Bølge Badezone,"55,66909722819186","12,576254239086913",Københavns Havn,False,True,Intestinal enterokokker,2025-04-01
+27,Fisketorvet Havnebad,"55,66268531286016","12,563929485293775",København Havn,False,True,Intestinal enterokokker,2025-04-01
+28,Havnevigen Badezone,"55,65454210496223","12,565669769620461",Københavns Havn,False,True,Intestinal enterokokker,2025-04-01
 29,"Amager Strandpark, Øresund","55,65853567572035","12,644511036377196",Øresund,False,True,Intestinal enterokokker,2025-04-10
 30,Sandkaj Badezone,"55,70660213213731","12,597773946753037",København Havn,False,True,Escherichia coli,2025-04-10
 31,Islands Brygge Havnebad,"55,668708300868346","12,577873308626224",København Havn,False,True,Intestinal enterokokker,2025-04-10
 32,Helgoland,"55,659877874609634","12,642615803514312",Mangler,False,True,Escherichia coli,2004-08-31
 33,Helgoland,"55,66509057139371","12,640284795428553",Mangler,False,True,Escherichia coli,2004-08-31
-34, La Banchina Badezone,"55,68929","12,61064",Københavns Havn,False,False,Escherichia coli,2025-04-01
-35,Sluseholmen Havnebad,"55,64652051044792","12,553936974075146",København Havn,False,True,Intestinal enterokokker,2025-01-14
+34, La Banchina Badezone,"55,68929","12,61064",Københavns Havn,False,False,Intestinal enterokokker,2025-04-01
+35,Sluseholmen Havnebad,"55,64652051044792","12,553936974075146",København Havn,False,False,Escherichia coli,2025-01-14

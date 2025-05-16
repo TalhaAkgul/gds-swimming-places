@@ -1,0 +1,36 @@
+,Name,Latitude,Longitude,WaterArea,Good_water,Stofparameter,Dato
+0, La Banchina Badezone,55.68929,12.61064,Københavns Havn,False,Intestinal enterokokker,2025-04-01
+1,"Amager Strandpark, Lagunen",55.657922417142586,12.640032256927284,Øresund,True,Escherichia coli,2025-04-01
+2,"Amager Strandpark, Øresund",55.65853567572035,12.644511036377196,Øresund,True,Intestinal enterokokker,2025-04-10
+3,Amager Sydstrand,55.58107234553681,12.658562241276446,Køge Bugt,False,Escherichia coli,2024-08-20
+4,Byskoven Badezone,55.62187078007546,12.52322848575085,,True,Escherichia coli,2025-04-10
+5,Dragør Nordstrand,55.6034555531332,12.673227748026212,Nordlige Øresund,True,Escherichia coli,2024-08-20
+6,"Dragør Søbad, Syd",55.58665573485622,12.675403549796474,Mangler,True,Escherichia coli,1999-09-14
+7,"Dragør søbad, nord",55.58702896235373,12.675851272827456,Køge Bugt,True,Escherichia coli,2025-04-16
+8,Fisketorvet Havnebad,55.66268531286016,12.563929485293777,København Havn,True,Intestinal enterokokker,2025-04-01
+9,Halfdansgade Badezone,55.66614080858703,12.57464798307132,København Havn,True,Intestinal enterokokker,2025-04-01
+10,Halvandet Badezone,55.69519715081318,12.608904204524425,Københavns Havn,False,Escherichia coli,2023-01-04
+11,Havnegade Badezone,55.67819668336113,12.59280691638746,Københavns Havn,True,Intestinal enterokokker,2025-04-01
+12,Havnevigen Badezone,55.65454210496223,12.56566976962046,Københavns Havn,True,Intestinal enterokokker,2025-04-01
+13,Helgoland,55.66509057139371,12.640284795428553,Mangler,True,Escherichia coli,2004-08-31
+14,Hellerup Strand,55.73263178861659,12.582466140588627,Nordlige Øresund,True,Intestinal enterokokker,2024-09-09
+15,Hvidovre Havn,55.62547529065108,12.503528533039788,Kalveboderne,True,Escherichia coli,2024-08-13
+16,Islands Brygge Havnebad,55.668708300868346,12.577873308626224,København Havn,True,Intestinal enterokokker,2025-04-10
+17,Kalvebod Bølge Badezone,55.66909722819186,12.576254239086913,Københavns Havn,True,Intestinal enterokokker,2025-04-01
+18,"Kastrup Søbad, nord for Kastrup lystbådehavn",55.64545531901956,12.649543574382358,Nordlige Øresund,True,Intestinal enterokokker,2025-03-26
+19,Kastrup søbad,55.633402568810006,12.656894110974772,Mangler,True,Escherichia coli,1994-07-26
+20,Lodsparken,55.62734519990664,12.502265612848722,Kalveboderne,True,Intestinal enterokokker,2024-08-13
+21,Mørtelrenden,55.62875482640816,12.503579982433282,Kalveboderne,False,Escherichia coli,2024-08-13
+22,"Nordhavn, havsvømmebane",55.72299786047034,12.609590964373732,Københavns Havn,True,Escherichia coli,2023-09-15
+23,Sandkaj Badezone,55.70660213213731,12.597773946753035,København Havn,True,Escherichia coli,2025-04-10
+24,Scanport badestation,55.63704615392599,12.656759502800412,Nordlige Øresund,True,Intestinal enterokokker,2025-03-26
+25,Sluseholmen Havnebad,55.64652051044792,12.553936974075146,København Havn,False,Escherichia coli,2025-01-14
+26,Stranden ved Valbyparken,55.6372329068556,12.52496240331288,Mangler,True,Intestinal enterokokker,2025-04-09
+27,Stubkaj,55.70917279026226,12.595048212650582,Københavns Havn,True,Escherichia coli,2025-04-10
+28,Svanemøllestranden,55.71992178705187,12.584471299867506,Øresund,True,Escherichia coli,2025-04-06
+29,Syd for Kastrup Lystbådehavn,55.64042268518959,12.653669704980269,Nordlige Øresund,True,Intestinal enterokokker,2025-03-26
+30,Søndre Refshale Badezone,55.690162608075084,12.608567217749624,Københavns Havn,True,Intestinal enterokokker,2025-01-15
+31,Søvang,55.56501192136597,12.621983729910689,Køge Bugt,False,Escherichia coli,2024-08-20
+32,Teglholm Brygge Badezone,55.65141733834468,12.545755643210985,Københavns Havn,True,Escherichia coli,2025-04-09
+33,Vandtrappen Badezone,55.64788784310548,12.546823560128423,Københavns Havn,True,Intestinal enterokokker,2025-04-09
+34,Ved Kongelundskroen,55.56278059475752,12.56134220358073,Køge Bugt,True,Escherichia coli,2024-08-27
