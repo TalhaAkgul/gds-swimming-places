@@ -82,6 +82,10 @@
 @keyframes prog {
   to { width: 100%; }
 }
+#toggle-hex-btn {
+  padding: 8px 16px;
+  font-size: 15px;
+}
 
 
 #lengths-info {
@@ -108,15 +112,13 @@
 }
 
 .glow-point {
-  background: #00f;
+  background: rgb(153, 4, 146);
   border-radius: 50%;
   width: 8px;
   height: 8px;
-  box-shadow: 0 0 8px 4px rgba(0, 0, 255, 0.6);
+  box-shadow: 0 0 8px 4px rgba(201, 8, 159, 0.6);
   opacity: 0.9;
 }
-
-
   </style>
 </head>
 <body>
@@ -134,6 +136,21 @@
   <strong>Distances to all stations:</strong>
   <ul id="lengths-list"></ul>
 </div>
+<div style="position: absolute; top: 10px; right: 10px; z-index: 1000;">
+  <button id="toggle-hex-walk-btn" class="popup-button">Show Walk Travel Time</button>
+  <button id="toggle-hex-bike-btn" class="popup-button">Show Bike Travel Time</button>
+</div>
+
+<div id="legend" style="position: absolute; bottom: 10px; right: 10px; z-index: 1000;
+    background: rgba(255, 255, 255, 0.95); padding: 10px; border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3); font-size: 14px; display: none;">
+
+  <strong id="legend-title">Travel Time Legend</strong>
+  <div id="legend-speed" style="font-size: 13px; color: #333;"></div>
+  <div id="legend-items" style="margin-top: 5px;"></div>
+</div>
+</div>
+
 
 
 
@@ -167,7 +184,7 @@
 
     movingMarker = L.marker(path[0], { icon: glowingDivIcon }).addTo(map);
 
-    const speed = 100; // milliseconds between steps
+    const speed = 200; // milliseconds between steps
     const pathLength = path.length;
 
     function moveStep() {
@@ -250,7 +267,7 @@
       }
 
       routeLayer = L.polyline(data.path, {
-        color: 'blue',
+        color: 'purple',
         weight: 5,
         opacity: 0.8
       }).addTo(map);
@@ -287,7 +304,7 @@
       }
 
       routeLayer = L.polyline(data.path, {
-        color: 'blue',
+        color: 'purple',
         weight: 5,
         opacity: 0.8
       }).addTo(map);
@@ -314,6 +331,133 @@
       alert("Error: " + err.message);
     });
   });
+
+  // --- H3 HEXBIN TRAVEL TIME OVERLAY ---
+  const legendDiv = document.getElementById("legend");
+
+  let walkHexLayer, bikeHexLayer;
+    let walkHexVisible = false, bikeHexVisible = false;
+
+      const legendConfigs = {
+        walk: [
+          { max: 5, color: '#1703fc', label: '<= 5 min' },
+          { max: 10, color: '#059df0', label: '6–10 min' },
+          { max: 15, color: '#05e4f0', label: '11–15 min' },
+          { max: 20, color: '#05f053', label: '16–20 min' },
+          { max: 25, color: '#dcf005', label: '21–25 min' },
+          { max: 30, color: '#f08605', label: '26–30 min' },
+          { max: Infinity, color: '#f00505', label: '> 30 min' }
+
+        ],
+        bike: [
+          { max: 5, color: '#1703fc', label: '<= 5 min' },
+          { max: 10, color: '#059df0', label: '6–10 min' },
+          { max: 15, color: '#05e4f0', label: '11–15 min' },
+          { max: 20, color: '#05f053', label: '16–20 min' },
+          { max: 25, color: '#dcf005', label: '21–25 min' },
+          { max: 30, color: '#f08605', label: '26–30 min' },
+          { max: Infinity, color: '#f00505', label: '> 30 min' }   
+        ]
+      };
+      function getColor(distance, type) {
+        if (distance === null || distance === undefined) return '#ccc';
+
+        const speedMPerMin = type === "walk" ? 80 : 250; // walk: ~4.8 km/h, bike: ~15 km/h
+        const minutes = distance / speedMPerMin;
+
+        for (let entry of legendConfigs[type]) {
+          if (minutes <= entry.max) return entry.color;
+        }
+        return '#ccc';
+      }
+      function renderLegend(type) {
+          const legendItems = legendConfigs[type];
+          const legendTitle = document.getElementById("legend-title");
+          const legendContent = document.getElementById("legend-items");
+          const legendSpeed = document.getElementById("legend-speed");
+
+          legendTitle.textContent = `${type === 'walk' ? 'Walk' : 'Bike'} Travel Time Legend`;
+
+          // Set the speed text
+          const speed = type === 'walk' ? '4.8 km/h (80 m/min)' : '15 km/h (250 m/min)';
+          legendSpeed.textContent = `Speed: ${speed}`;
+
+          legendContent.innerHTML = '';
+
+          legendItems.forEach(entry => {
+            const item = document.createElement("div");
+            item.innerHTML = `<span style="display:inline-block;width:16px;height:16px;background:${entry.color};margin-right:6px;"></span> ${entry.label}`;
+            legendContent.appendChild(item);
+          });
+
+          document.getElementById("legend").style.display = 'block';
+        }
+
+
+        function toggleHexLayer(type) {
+          const otherType = type === "walk" ? "bike" : "walk";
+          const url = type === "walk" ? "/hexgrid-walk" : "/hexgrid-bike";
+          const layerVar = type === "walk" ? "walkHexLayer" : "bikeHexLayer";
+          const visibleVar = type === "walk" ? "walkHexVisible" : "bikeHexVisible";
+          const button = document.getElementById(`toggle-hex-${type}-btn`);
+          const otherButton = document.getElementById(`toggle-hex-${otherType}-btn`);
+
+          // Hide the other type if it's visible
+          if (window[`${otherType}HexVisible`]) {
+            map.removeLayer(window[`${otherType}HexLayer`]);
+            window[`${otherType}HexVisible`] = false;
+            otherButton.textContent = `Show ${otherType === "walk" ? "Walk" : "Bike"} Travel Time`;
+          }
+
+          if (!window[layerVar]) {
+            fetch(url)
+              .then(res => res.json())
+              .then(data => {
+                window[layerVar] = L.geoJSON(data, {
+                  style: function (feature) {
+                    return {
+                      fillColor: getColor(feature.properties.travel_m, type),
+                      color: '#444',
+                      weight: 0.3,
+                      fillOpacity: 0.5
+                    };
+                  }
+                });
+
+                map.addLayer(window[layerVar]);
+                renderLegend(type);
+                window[visibleVar] = true;
+                button.textContent = `Hide ${type === "walk" ? "Walk" : "Bike"} Travel Time`;
+                legendDiv.style.display = "block";
+              })
+              .catch(err => {
+                console.error(`Failed to load ${type} hexgrid:`, err);
+                alert(`Failed to load ${type} travel time map.`);
+              });
+          } else {
+            if (window[visibleVar]) {
+              map.removeLayer(window[layerVar]);
+              button.textContent = `Show ${type === "walk" ? "Walk" : "Bike"} Travel Time`;
+              legendDiv.style.display = "none";
+            } else {
+              map.addLayer(window[layerVar]);
+              renderLegend(type);
+              button.textContent = `Hide ${type === "walk" ? "Walk" : "Bike"} Travel Time`;
+              legendDiv.style.display = "block";
+            }
+            window[visibleVar] = !window[visibleVar];
+          }
+        }
+
+    document.getElementById("toggle-hex-walk-btn").addEventListener("click", function () {
+      toggleHexLayer("walk");
+    });
+
+    document.getElementById("toggle-hex-bike-btn").addEventListener("click", function () {
+      toggleHexLayer("bike");
+    });
+
+
 </script>
 </body>
 </html>
