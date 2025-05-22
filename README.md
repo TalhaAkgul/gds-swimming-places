@@ -30,11 +30,12 @@ Install Python 3.8+ and the following dependencies:
 ```bash
 pip install -r requirements.txt
 ```
-### Run the App
-- Make sure graphml file and final_dataset.csv files that ```app.py``` reads are in the root app/ folder.
+### Generating Network Graph
+- If you don't have graphml file you need to download
 - ```bash
-  python app.py
+  python cph-map.py
   ```
+  
 ### Generating Isochrone Maps
 - Make sure graphml file and final_dataset.csv files that ```hexamap.py``` reads are in the root app/ folder.
 - ```bash
@@ -42,7 +43,8 @@ pip install -r requirements.txt
   ```
  ```copenhagen-hex-boundries.geojson``` has the polygon to fill hexagons with.
 
-### Generating Network Graph
+ ### Run the App
+- Make sure graphml file and final_dataset.csv files that ```app.py``` reads are in the root app/ folder.
 - ```bash
-  python cph-map.py
+  python app.py
   ```
