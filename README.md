@@ -45,6 +45,9 @@ venv\Scripts\activate
 
 Install the required packages
 ```bash
+pip install -r requirements.txt
+```
+
 ### Generating Network Graph
 - If you don't have graphml file, you need to download
 - ```bash
