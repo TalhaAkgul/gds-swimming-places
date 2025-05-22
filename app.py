@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 # Load data when the app starts
 print("Loading saved map graph...")
-G = ox.load_graphml("copenhagen_15km_bike.graphml")
+G = ox.load_graphml("copenhagen_15km.graphml")
 print("Graph loaded.")
 
 df = pd.read_csv("data_cleaning/output/final_dataset.csv")
