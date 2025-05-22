@@ -55,7 +55,8 @@ pip install -r requirements.txt
   ```
   
 ### Generating Isochrone Maps
-- Make sure graphml file and final_dataset.csv files that ```hexamap.py``` reads are in the root app/ folder.
+- By default, isochrone maps are under static/ folder but if you want to regenerate,
+- Make sure you have corresponding graphml file and final_dataset.csv files that ```hexamap.py``` reads are in the root app/ folder.
 - ```bash
   python hexamap.py
   ```
