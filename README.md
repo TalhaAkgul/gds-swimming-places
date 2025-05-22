@@ -8,7 +8,7 @@ Closest Swimming Spots in Copenhagen
 ## Features
 
 - 🌊 Interactive map with clickable locations
-- 🏊 View nearest swimming place and its path from any point
+- 🏊 View the nearest swimming place and its path from any point
 - 📍 Display water quality data for each swimming location
 - 🧭 Isochrone maps with hexagonal bins showing travel distance
 - 🚶🚴 Support for both walking and biking networks
@@ -31,7 +31,7 @@ Install Python 3.8+ and the following dependencies:
 pip install -r requirements.txt
 ```
 ### Generating Network Graph
-- If you don't have graphml file you need to download
+- If you don't have graphml file, you need to download
 - ```bash
   python cph-map.py
   ```
@@ -48,3 +48,25 @@ pip install -r requirements.txt
 - ```bash
   python app.py
   ```
+
+### Setting up Python environment
+Create a virtual environment
+  
+```bash
+python3 -m venv venv
+```
+
+Activate the virtual environment
+- On Linux/macOS:
+```bash
+source venv/bin/activate
+```
+- On Windows:
+```bash
+venv\Scripts\activate
+```
+
+Install the required packages
+```bash
+pip install -r requirements.txt
+```
