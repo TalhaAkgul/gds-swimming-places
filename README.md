@@ -25,31 +25,8 @@ Closest Swimming Spots in Copenhagen
 
 ### Prerequisites
 
-Install Python 3.8+ and the following dependencies:
+Python version: 3.12.
 
-```bash
-pip install -r requirements.txt
-```
-### Generating Network Graph
-- If you don't have graphml file, you need to download
-- ```bash
-  python cph-map.py
-  ```
-  
-### Generating Isochrone Maps
-- Make sure graphml file and final_dataset.csv files that ```hexamap.py``` reads are in the root app/ folder.
-- ```bash
-  python hexamap.py
-  ```
- ```copenhagen-hex-boundries.geojson``` has the polygon to fill hexagons with.
-
- ### Run the App
-- Make sure graphml file and final_dataset.csv files that ```app.py``` reads are in the root app/ folder.
-- ```bash
-  python app.py
-  ```
-
-### Setting up Python environment
 Create a virtual environment
   
 ```bash
@@ -68,5 +45,21 @@ venv\Scripts\activate
 
 Install the required packages
 ```bash
-pip install -r requirements.txt
-```
+### Generating Network Graph
+- If you don't have graphml file, you need to download
+- ```bash
+  python cph-map.py
+  ```
+  
+### Generating Isochrone Maps
+- Make sure graphml file and final_dataset.csv files that ```hexamap.py``` reads are in the root app/ folder.
+- ```bash
+  python hexamap.py
+  ```
+ ```copenhagen-hex-boundries.geojson``` has the polygon to fill hexagons with.
+
+ ### Run the App
+- Make sure graphml file and final_dataset.csv files that ```app.py``` reads are in the root app/ folder.
+- ```bash
+  python app.py
+  ```
