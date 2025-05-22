@@ -7,6 +7,7 @@ import geopandas as gpd
 import json
 
 print("Loading saved map graph...")
+# To create hexamap of bike or walk network, you need to graphml files for those networks
 G = ox.load_graphml("copenhagen_15km_bike.graphml")
 print("Graph loaded.")
 
