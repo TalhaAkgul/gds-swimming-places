@@ -1,11 +1,12 @@
 osmnx==2.0.2
 geopandas==1.0.1
 matplotlib==3.10.1
-networkx==3.4.2
+networkx==3.2.1
 shapely==2.1.0
 pandas==2.2.3
 requests==2.32.3
 pyproj==3.7.1
 numpy==2.2.4
-matplotlib==3.7.2
 contextily==1.6.2
+flask==3.0.3
+h3==3.7.7
