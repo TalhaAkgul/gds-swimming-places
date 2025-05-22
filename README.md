@@ -3,7 +3,7 @@ Closest Swimming Spots in Copenhagen
 
 # AquaPath
 
-**SwimPath** is an interactive web application that helps users find the shortest path to the nearest swimming place in Copenhagen. It also visualizes the accessibility of swimming areas through hexagonal isochrone maps for both walking and biking networks.
+**AquaPath** is an interactive web application that helps users find the shortest path to the nearest swimming place in Copenhagen. It also visualizes the accessibility of swimming areas through hexagonal isochrone maps for both walking and biking networks.
 
 ## Features
 
