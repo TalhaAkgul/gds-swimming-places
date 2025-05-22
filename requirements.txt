@@ -10,3 +10,4 @@ numpy==2.2.4
 contextily==1.6.2
 flask==3.0.3
 h3==3.7.7
+scikit-learn
