@@ -25,12 +25,12 @@ Closest Swimming Spots in Copenhagen
 
 ### Prerequisites
 
-Python version: 3.12.
+Python version: 3.12
 
 Create a virtual environment
   
 ```bash
-python3.12 -m venv venv
+python -m venv venv
 ```
 
 Activate the virtual environment
