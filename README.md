@@ -30,7 +30,7 @@ Python version: 3.12.
 Create a virtual environment
   
 ```bash
-python3 -m venv venv
+python3.12 -m venv venv
 ```
 
 Activate the virtual environment
